@@ -8,7 +8,6 @@ pub fn solve_lu(
     a: &mut Array<f64, Ix2>,
     b: &Array<f64, Ix1>,
 ) -> Result<Array<f64, Ix1>, &'static str> {
-    
     if a.shape()[0] != b.shape()[0] {
         return Err("invalid shape for a and b");
     }
@@ -26,29 +25,36 @@ pub fn solve_lu(
 }
 
 pub fn det(a: &mut Array<f64, Ix2>, count_permute: usize) -> Option<f64> {
-    if a.shape()[0] != a.shape()[1] { None }
-    else {
+    if a.shape()[0] != a.shape()[1] {
+        None
+    } else {
         let mut v = 1.;
         for i in 0..a.shape()[0] {
-            v *= a[[i,i]];
+            v *= a[[i, i]];
         }
-        if (a.shape()[0] - count_permute) % 2 == 0 { Some(v) }
-        else { Some(-v) }
+        if (a.shape()[0] - count_permute) % 2 == 0 {
+            Some(v)
+        } else {
+            Some(-v)
+        }
     }
 }
 
-pub fn lu(a: &mut Array<f64, Ix2>, p: &mut Vec<usize>, count_permute: & mut usize) -> Result<(), &'static str> {
-    
+pub fn lu(
+    a: &mut Array<f64, Ix2>,
+    p: &mut Vec<usize>,
+    count_permute: &mut usize,
+) -> Result<(), &'static str> {
     let cols = a.shape()[1];
     let rows = a.shape()[0];
-    
+
     //permutation of row
     p.resize_with(rows, Default::default);
     for i in 0..rows {
         p[i] = i;
     }
     *count_permute = 0;
-    
+
     for i in 0..rows {
         //partial pivot
         let (mut v, mut ii) = (a[[p[i], i]], p[i]);
@@ -67,7 +73,7 @@ pub fn lu(a: &mut Array<f64, Ix2>, p: &mut Vec<usize>, count_permute: & mut usiz
         p[i] = ii; //permute
         p[ii] = i;
         *count_permute += 1;
-        
+
         for j in i + 1..rows {
             let jj = p[j];
             let f = a[[jj, i]] / a[[ii, i]];
@@ -152,11 +158,11 @@ fn test_lu_0() {
 
     let mut p = Vec::new();
     let mut c_p = 0;
-    lu(&mut a, &mut p, & mut c_p).expect("lu");
-    
+    lu(&mut a, &mut p, &mut c_p).expect("lu");
+
     let mut pp = p.clone();
     permute(&mut a, &mut pp[..]);
-    
+
     let mut l = a.clone();
     l[[0, 0]] = 1.;
     l[[1, 1]] = 1.;

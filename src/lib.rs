@@ -3,27 +3,28 @@ extern crate ndarray;
 #[cfg(test)]
 mod util;
 
-mod lu;
-mod jacobi;
-mod gs;
-mod ssor;
 mod cg;
+mod gs;
+mod jacobi;
+mod lu;
+mod ssor;
 
 pub mod prelude {
-    pub use crate::jacobi::solve_jacobi as solve_jacobi;
-    pub use crate::lu::solve_lu as solve_lu;
-    pub use crate::gs::solve_gs as solve_gs;
-    pub use crate::ssor::solve_ssor as solve_ssor;
-    pub use crate::cg::solve_cg as solve_cg;
+    pub use crate::cg::solve_cg;
+    pub use crate::cg::solve_cg_precond;
+    pub use crate::gs::solve_gs;
+    pub use crate::jacobi::solve_jacobi;
+    pub use crate::lu::solve_lu;
+    pub use crate::ssor::solve_ssor;
 }
 
 #[cfg(test)]
 mod tests {
     #[test]
     fn test_crate() {
-        use crate::prelude::*;
         use crate::ndarray::prelude::*;
-        
+        use crate::prelude::*;
+
         let mut a = arr2(&[[6., 18., 3.], [2., 12., 1.], [4., 15., 3.]]);
 
         let orig = a.clone();

@@ -1,7 +1,7 @@
 use ndarray::prelude::*;
 use num::Float;
 
-const EPS : f64 = 1e-9;
+const EPS: f64 = 1e-9;
 
 pub fn arr2_eq(a: &Array<f64, Ix2>, b: &Array<f64, Ix2>) -> bool {
     if a.shape() != b.shape() {
