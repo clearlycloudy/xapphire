@@ -1,0 +1,14 @@
+[package]
+name = "xapphire"
+version = "0.1.0"
+edition = "2018"
+description = "compute utility"
+authors = ["(Bill) Yuan Liu <yuan6liu@gmail.com>"]
+license = "MIT"
+documentation = "https://docs.rs/xapphire/"
+repository = "https://github.com/clearlycloudy/xapphire/"
+readme = "README.md"
+
+[dependencies]
+ndarray = "0.13.1"
+num = "0.3"
