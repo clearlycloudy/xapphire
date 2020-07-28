@@ -99,7 +99,7 @@ pub fn solve_cg_precond(
 
     let mut r = b - &a.dot(x0);
     let r0 = r.clone();
-    let mut q = solve_lu(&mut a.clone(), &r0).expect("solve lu failed");
+    let mut q = solve_lu(&mut precond.clone(), &r0)?;
     let q0 = q.clone();
     let mut d = q.clone();
     let mut alpha = 0.;
@@ -109,7 +109,7 @@ pub fn solve_cg_precond(
     let mut it = 1;
     while it <= iter_max {
         let mut r_new = &r - &(a.dot(&d) * lambda);
-        let mut q_new = solve_lu(&mut a.clone(), &r_new).expect("solve lu failed");
+        let mut q_new = solve_lu(&mut precond.clone(), &r_new)?;
         alpha = (&q_new * &r_new).sum() / (&q * &r).sum();
         d = &q_new + &(alpha * &d);
         lambda = (&q_new * &r_new).sum() / (&d * &a.dot(&d)).sum();
@@ -143,5 +143,5 @@ fn test_cg_precond_1() {
     let (x, it, res) =
         solve_cg_precond(&a, &b, &x0, &precond, 1e-9, 100).expect("solve_cg_precond");
     dbg!(&x, it, res);
-    assert!(arr1_eq(&x, &arr1(&[3., 7., 5.])));
+    assert!(arr1_eq_tol(&x, &arr1(&[3., 7., 5.]), 1e-6));
 }

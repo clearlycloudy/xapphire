@@ -35,3 +35,36 @@ pub fn arr1_eq(a: &Array<f64, Ix1>, b: &Array<f64, Ix1>) -> bool {
         true
     }
 }
+
+pub fn arr2_eq_tol(a: &Array<f64, Ix2>, b: &Array<f64, Ix2>, tol: f64) -> bool {
+    if a.shape() != b.shape() {
+        false
+    } else {
+        let (r, c) = (a.shape()[0], a.shape()[1]);
+        for i in 0..r {
+            for j in 0..c {
+                if (a[[i, j]] - b[[i, j]]).abs() > tol {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+}
+
+pub fn arr1_eq_tol(a: &Array<f64, Ix1>, b: &Array<f64, Ix1>, tol: f64) -> bool {
+    if a.shape() != b.shape() {
+        false
+    } else {
+        let r = a.shape()[0];
+        for i in 0..r {
+            if (a[i] - b[i]).abs() > tol {
+                dbg!(&a);
+                dbg!(&b);
+                dbg!((a[i] - b[i]).abs());
+                return false;
+            }
+        }
+        true
+    }
+}
